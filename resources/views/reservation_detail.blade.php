@@ -65,15 +65,15 @@
                         <form action="{{route('user.reservation')}}" method="post">
                             @csrf
                             <div class="mb-3">
-                                <input  type="text" readonly name="hotel_id" class="form-control"
+                                <input hidden  type="text" readonly name="hotel_id" class="form-control"
                                         id="hotelId" required>
                             </div>
                             <div class="mb-3">
-                                <input type="text" readonly name="detailId" class="form-control"
+                                <input hidden type="text" readonly name="detailId" class="form-control"
                                         id="detailId" required>
                             </div>
                             <div class="mb-3">
-                                <input type="text" readonly id="hotelPrice" name="hotelPrice" class="form-control"
+                                <input hidden type="text" readonly id="hotelPrice" name="hotelPrice" class="form-control"
                                        required>
                             </div>
                             <div class="mb-3">
@@ -99,11 +99,13 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="checkin_date" class="form-label">Giriş tarihi ve kaç gün kalacağınız:</label>
+                                <label for="checkin_date" class="form-label">Giriş tarihi ve Çıkış Tarihi</label>
                                 <div class=" d-flex align-items-center">
                                     <input type="date" id="checkin_date" class="form-control flex-grow-1" name="checkin_date" required>
-                                    <input type="number" onchange="changePrice()" min="1" max="12" placeholder="Gün Sayısı" name="count_day" value="1" id="count_day" class="form-control flex-grow-0" required>
+                                    <input onchange="calculatePrice()" type="date" id="checkout_date" class="form-control flex-grow-1" name="checkout_date" required>
+
                                 </div>
+                                <div id="errorMsg" class="mt-3 alert alert-danger" style="display: none"></div>
                             </div>
 
 
@@ -143,9 +145,8 @@
             const hotelName = document.getElementById("hotelName");
             const hotelPriceTotal = document.getElementById("hotelPriceTotal");
             const hotel_price = document.getElementById("hotel_price");
-            const count_day = document.getElementById("count_day");
             const hotelTotalPriceInt = parseInt(price);
-            const totalPriceWithPerson = hotelTotalPriceInt * document.querySelector("select[name='person_count']").value * count_day.value;
+            const totalPriceWithPerson = hotelTotalPriceInt * document.querySelector("select[name='person_count']").value;
             hotelPriceTotal.innerHTML = "Price: " + totalPriceWithPerson + "₺";
             hotelId.value = hotelIdDB;
             hotelPriceHtml.value = price;
@@ -158,15 +159,45 @@
             const hotelPrice = document.getElementById("hotelPrice");
             const hotel_price = document.getElementById("hotel_price");
             const hotelPriceTotal = document.getElementById("hotelPriceTotal");
-            const count_day = document.getElementById("count_day");
+            const checkin_date = document.getElementById("checkin_date");
+            const checkout_date = document.getElementById("checkout_date");
+            const date1 = new Date(checkin_date.value);
+            const date2 = new Date(checkout_date.value);
+            const diffTime = date2 - date1;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             if (hotelPrice.value === "") {
                 hotelPriceTotal.innerHTML = "Price: 0₺";
                 return;
             }
             const hotelTotalPriceInt = parseInt(hotelPrice.value);
-            const totalPriceWithPerson = hotelTotalPriceInt * document.querySelector("select[name='person_count']").value * count_day.value;
+            const totalPriceWithPerson = hotelTotalPriceInt * document.querySelector("select[name='person_count']").value * diffDays;
             hotelPriceTotal.innerHTML = "Price: " + totalPriceWithPerson + "₺";
             hotel_price.value = totalPriceWithPerson;
+        }
+
+        function calculatePrice() {
+
+            const checkin_date = document.getElementById("checkin_date");
+            const checkout_date = document.getElementById("checkout_date");
+            const errMsg = document.getElementById("errorMsg");
+            const date1 = new Date(checkin_date.value);
+            const date2 = new Date(checkout_date.value);
+            const diffTime = date2 - date1;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            console.log(diffDays)
+            if (diffDays < 0) {
+                errMsg.style.display = "block";
+                errMsg.innerHTML = "Çıkış tarihi giriş tarihinden önce olamaz.";
+                setTimeout(function () {
+                    errMsg.style.display = "none";
+                }, 3000);
+                checkin_date.value = "";
+                setTimeout(function () {
+                    checkout_date.value = "";
+                }, 0.01);
+                return;
+            }
+            changePrice();
         }
 
 
