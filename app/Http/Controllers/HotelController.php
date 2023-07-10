@@ -94,4 +94,20 @@ class HotelController extends Controller
         $hotel_details = Reservation::where('hotel_id', $hotelId)->get();
         return view('hotel.reservation', compact('hotel_details'));
     }
+
+    public function confirmReservation($id)
+    {
+        $reservation = Reservation::find($id);
+        $reservation->status = 1;
+        $reservation->save();
+        return redirect()->route('hotel.reservation.get');
+    }
+
+    public function cancelReservation($id)
+    {
+        $reservation = Reservation::find($id);
+        $reservation->status = 2;
+        $reservation->save();
+        return redirect()->route('hotel.reservation.get');
+    }
 }
