@@ -18,8 +18,8 @@ class UserController extends Controller
             'hotel_name' => 'required',
             'hotel_price' => 'required',
             'person_count' => 'required',
-            'count_day' => 'required',
             'checkin_date' => 'required',
+            'checkout_date' => 'required',
             'phone' => 'required|string|min:10|max:11',
             'detailId' => 'required'
         ]);
@@ -30,7 +30,7 @@ class UserController extends Controller
 
         //Check reservation date is available
         $checkin_date = date('Y-m-d', strtotime($request->checkin_date));
-        $checkout_date = date('Y-m-d', strtotime($request->checkin_date . ' + ' . $request->count_day . ' days'));
+        $checkout_date = date('Y-m-d', strtotime($request->checkout_date));
         $reservation = Reservation::where('hotel_id', $request->hotel_id)
             ->where('checkin_date', '<=', $checkin_date)
             ->where('checkout_date', '>=', $checkout_date)
@@ -48,10 +48,8 @@ class UserController extends Controller
         $reservation->hotel_price = $request->hotel_price;
         $reservation->person_count = $request->person_count;
         $reservation->phone = $request->phone;
-        $reservation->count_day = $request->count_day;
         $reservation->checkin_date = $request->checkin_date;
-        $checkout_date = date('Y-m-d', strtotime($request->checkin_date . ' + ' . $request->count_day . ' days'));
-        $reservation->checkout_date = $checkout_date;
+        $reservation->checkout_date = $request->checkout_date;
         $reservation->save();
 
         return redirect()->back()->with('success', 'Rezervasyonunuz başarıyla oluşturuldu.');
