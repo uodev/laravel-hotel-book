@@ -53,4 +53,6 @@ Route::group(['prefix' => 'hotel'], function () {
 
     Route::get('/reservation', [App\Http\Controllers\HotelController::class, 'reservertaion'])->middleware('hotel.auth')->name('hotel.reservation.get');
 
+    Route::get('/reservation/confirm/{id}', [App\Http\Controllers\HotelController::class, 'confirmReservation'])->middleware('hotel.auth')->name('hotel.reservation.confirm');
+    Route::get('/reservation/cancel/{id}', [App\Http\Controllers\HotelController::class, 'cancelReservation'])->middleware('hotel.auth')->name('hotel.reservation.cancel');
 });
