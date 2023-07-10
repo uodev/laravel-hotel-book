@@ -18,6 +18,7 @@
                         <th scope="col">Person Count</th>
                         <th scope="col">Checkin Date</th>
                         <th scope="col">Checkout Date</th>
+                        <th scope="col">Status</th>
                         <th scope="col">Actions</th>
 
                     </tr>
@@ -34,6 +35,15 @@
                         <td>{{$reservation->person_count}}</td>
                         <td>{{$reservation->checkin_date}}</td>
                         <td>{{$reservation->checkout_date}}</td>
+                        <td>
+                            @if($reservation->status == 1)
+                                <span class="badge text-success">Onaylandı</span>
+                            @elseif($reservation->status == 2)
+                                <span class="badge text-danger">İptal Edildi</span>
+                            @else
+                                <span class="badge text-warning">Bekliyor</span>
+                            @endif
+                        </td>
                         <td>
                             <a href="#" class="btn-warning btn">Details</a>
                         </td>
