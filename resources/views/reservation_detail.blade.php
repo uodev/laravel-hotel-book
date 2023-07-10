@@ -138,8 +138,12 @@
     </div>
 
     <script>
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById("checkin_date").setAttribute("min", today);
+        document.getElementById("checkout_date").setAttribute("min", today);
         function addReservation(id,hotelIdDB, name, price) {
             const detailId = document.getElementById("detailId");
+            const userPhone = document.getElementById("userPhone");
             const hotelId = document.getElementById("hotelId");
             const hotelPriceHtml = document.getElementById("hotelPrice");
             const hotelName = document.getElementById("hotelName");
@@ -149,6 +153,7 @@
             const totalPriceWithPerson = hotelTotalPriceInt * document.querySelector("select[name='person_count']").value;
             hotelPriceTotal.innerHTML = "Price: " + totalPriceWithPerson + "₺";
             hotelId.value = hotelIdDB;
+            userPhone.value = "{{auth()->user()->phone}}";
             hotelPriceHtml.value = price;
             detailId.value = id;
             hotelName.value = name;
@@ -170,7 +175,7 @@
                 return;
             }
             const hotelTotalPriceInt = parseInt(hotelPrice.value);
-            const totalPriceWithPerson = hotelTotalPriceInt * document.querySelector("select[name='person_count']").value * diffDays;
+            const totalPriceWithPerson = hotelTotalPriceInt * document.querySelector("select[name='person_count']").value * (diffDays ? diffDays : 1);
             hotelPriceTotal.innerHTML = "Price: " + totalPriceWithPerson + "₺";
             hotel_price.value = totalPriceWithPerson;
         }
