@@ -27,6 +27,12 @@ class UserController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator->errors());
         }
+        //check date is not past
+        $checkin_date = date('Y-m-d', strtotime($request->checkin_date));
+        $checkout_date = date('Y-m-d', strtotime($request->checkout_date));
+        if ($checkin_date < date('Y-m-d') || $checkout_date < date('Y-m-d')) {
+            return redirect()->back()->withErrors('Geçmiş tarihler için rezervasyon yapılamaz.');
+        }
 
         //Check reservation date is available
         $checkin_date = date('Y-m-d', strtotime($request->checkin_date));
