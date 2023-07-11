@@ -6,34 +6,35 @@
             <div class="col-lg-9">
                 <h1>Hotels Detail</h1>
                 @if(!$details->isEmpty())
-                <div class="d-flex flex-wrap gap-3">
+                    <div class="d-flex flex-wrap gap-3">
 
-                    @foreach($details as $detail)
-                        <div class="card" style="width: 18rem;">
-                            <img
-                                src="{{$detail->room_image}}"
-                                class="card-img-top" alt="detail photo">
-                            <div class="card-body">
-                                @if($detail->pension_type == 1)
-                                    <h5 class="card-title">Ultra Her Şey Dahil</h5>
-                                @elseif($detail->pension_type == 2)
-                                    <h5 class="card-title">Her Şey Dahil</h5>
-                                @elseif($detail->pension_type == 3)
-                                    <h5 class="card-title">Tam Pansiyon</h5>
-                                @elseif($detail->pension_type == 4)
-                                    <h5 class="card-title">Yarı Pansiyon</h5>
-                                @endif
-                                <p class="card-text">Price: {{$detail->price}}₺</p>
+                        @foreach($details as $detail)
+                            <div class="card" style="width: 18rem;">
+                                <img
+                                    src="{{$detail->room_image}}"
+                                    class="card-img-top" alt="detail photo">
+                                <div class="card-body">
+                                    @if($detail->pension_type == 1)
+                                        <h5 class="card-title">Ultra Her Şey Dahil</h5>
+                                    @elseif($detail->pension_type == 2)
+                                        <h5 class="card-title">Her Şey Dahil</h5>
+                                    @elseif($detail->pension_type == 3)
+                                        <h5 class="card-title">Tam Pansiyon</h5>
+                                    @elseif($detail->pension_type == 4)
+                                        <h5 class="card-title">Yarı Pansiyon</h5>
+                                    @endif
+                                    <p class="card-text">Price: {{$detail->price}}₺</p>
 
-                                <button onclick="addReservation({{$detail->id}},{{$detail->hotel->id }},'{{$detail->hotel->name}}','{{$detail->price}}')"
+                                    <button
+                                        onclick="addReservation({{$detail->id}},{{$detail->hotel->id }},'{{$detail->hotel->name}}','{{$detail->price}}')"
                                         class="btn btn-primary">Make Reservation
-                                </button>
+                                    </button>
 
+                                </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
 
-                </div>
+                    </div>
                 @else
                     <div class="alert alert-warning">
                         <h4 class="alert-heading">Warning!</h4>
@@ -44,7 +45,7 @@
                     </div>
                 @endif
             </div>
-{{--                        if user is login show reservation form--}}
+            {{--                        if user is login show reservation form--}}
             @if(auth()->check())
 
                 <div class="col-lg-3" style="position: fixed; right: 15%; top: 8%;width: 15% ">
@@ -65,20 +66,22 @@
                         <form action="{{route('user.reservation')}}" method="post">
                             @csrf
                             <div class="mb-3">
-                                <input hidden  type="text" readonly name="hotel_id" class="form-control"
-                                        id="hotelId" required>
+                                <input hidden type="text" readonly name="hotel_id" class="form-control"
+                                       id="hotelId" required>
                             </div>
                             <div class="mb-3">
                                 <input hidden type="text" readonly name="detailId" class="form-control"
-                                        id="detailId" required>
+                                       id="detailId" required>
                             </div>
                             <div class="mb-3">
-                                <input hidden type="text" readonly id="hotelPrice" name="hotelPrice" class="form-control"
+                                <input hidden type="text" readonly id="hotelPrice" name="hotelPrice"
+                                       class="form-control"
                                        required>
                             </div>
                             <div class="mb-3">
                                 <label for="hotelName" class="form-label">Hotel Name</label>
-                                <input type="text" value="" readonly name="hotel_name" class="form-control" id="hotelName"
+                                <input type="text" value="" readonly name="hotel_name" class="form-control"
+                                       id="hotelName"
                                        required>
                             </div>
 
@@ -101,13 +104,14 @@
                             <div class="mb-3">
                                 <label for="checkin_date" class="form-label">Giriş tarihi ve Çıkış Tarihi</label>
                                 <div class=" d-flex align-items-center">
-                                    <input type="date" id="checkin_date" class="form-control flex-grow-1" name="checkin_date" required>
-                                    <input onchange="calculatePrice()" type="date" id="checkout_date" class="form-control flex-grow-1" name="checkout_date" required>
+                                    <input type="date" id="checkin_date" class="form-control flex-grow-1"
+                                           name="checkin_date" required>
+                                    <input onchange="calculatePrice()" type="date" id="checkout_date"
+                                           class="form-control flex-grow-1" name="checkout_date" required>
 
                                 </div>
                                 <div id="errorMsg" class="mt-3 alert alert-danger" style="display: none"></div>
                             </div>
-
 
 
                             <div class="d-flex align-items-center  justify-content-between">
@@ -115,7 +119,8 @@
                                 <h5 id="hotelPriceTotal" class="mt-2 h-75">Price: 0₺</h5>
                             </div>
                             <div class="mb-3">
-                                <input hidden type="text"  readonly id="hotel_price" name="hotel_price" class="form-control"
+                                <input hidden type="text" readonly id="hotel_price" name="hotel_price"
+                                       class="form-control"
                                        required>
                             </div>
                         </form>
@@ -124,7 +129,7 @@
                 </div>
 
             @else
-                <div class="col-lg-3" >
+                <div class="col-lg-3">
                     <div class="alert alert-warning">
                         <h4 class="alert-heading">Warning!</h4>
                         <p>You must login for reservation</p>
@@ -141,7 +146,8 @@
         const today = new Date().toISOString().split('T')[0];
         document.getElementById("checkin_date").setAttribute("min", today);
         document.getElementById("checkout_date").setAttribute("min", today);
-        function addReservation(id,hotelIdDB, name, price) {
+
+        function addReservation(id, hotelIdDB, name, price) {
             const detailId = document.getElementById("detailId");
             const userPhone = document.getElementById("userPhone");
             const hotelId = document.getElementById("hotelId");
@@ -153,7 +159,11 @@
             const totalPriceWithPerson = hotelTotalPriceInt * document.querySelector("select[name='person_count']").value;
             hotelPriceTotal.innerHTML = "Price: " + totalPriceWithPerson + "₺";
             hotelId.value = hotelIdDB;
-            userPhone.value = "{{auth()->user()->phone}}";
+            @if(auth()->check() && auth()->user()->phone !== null)
+                userPhone.value = "{{ auth()->user()->phone }}";
+            @else
+                userPhone.value = "";
+            @endif
             hotelPriceHtml.value = price;
             detailId.value = id;
             hotelName.value = name;

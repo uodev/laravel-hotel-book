@@ -37,7 +37,16 @@ Route::group(['prefix' => 'admin'], function () {
 //User Routes
 Route::group(['prefix' => 'user'], function () {
     Route::post('/reservation', [App\Http\Controllers\UserController::class, 'reservation'])->name('user.reservation');
+    Route::get('/reservation-payment', [App\Http\Controllers\UserController::class, 'reservationPayment'])->name('user.reservation.payment');
+    Route::post('/reservation-payment', [App\Http\Controllers\UserController::class, 'reservationPaymentCreate'])->name('user.reservation.payment.create');
+
     Route::get('/reservation/details/{id}', [App\Http\Controllers\UserController::class, 'getReservationDetail'])->name('user.reservation.detail');
+
+    Route::get('/profile', [App\Http\Controllers\UserController::class, 'getProfile'])->name('user.profile');
+    Route::get('/profile/credit-carts', [App\Http\Controllers\UserController::class, 'getCreditCarts'])->name('user.profile.credit-carts');
+    Route::get('/profile/reservations', [App\Http\Controllers\UserController::class, 'getUserReservations'])->name('user.profile.reservations');
+    Route::get('/profile/credit-carts/add', [App\Http\Controllers\UserController::class, 'addCreditCarts'])->name('user.profile.credit-carts.add');
+    Route::post('/profile/credit-carts/add', [App\Http\Controllers\UserController::class, 'storeCreditCarts'])->name('user.profile.credit-carts.add');
 });
 
 //Hotel Routes
