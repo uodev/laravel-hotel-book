@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+
+    public function index()
+    {
+        return redirect(route('home'));
+    }
     public function reservation(Request $request)
     {
 
@@ -65,6 +70,9 @@ class UserController extends Controller
 
     public function reservationPayment(Request $request)
     {
+        if (!auth()->check())
+            return redirect(route('home'))->withErrors('Lütfen önce giriş yapınız.');
+
         $reservation = cache()->get('reservation');
 
         if (!$reservation) {
