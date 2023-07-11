@@ -36,6 +36,7 @@ Route::group(['prefix' => 'admin'], function () {
 
 //User Routes
 Route::group(['prefix' => 'user'], function () {
+    Route::get('/', [App\Http\Controllers\UserController::class, 'index'])->name('user.index');
     Route::post('/reservation', [App\Http\Controllers\UserController::class, 'reservation'])->name('user.reservation');
     Route::get('/reservation-payment', [App\Http\Controllers\UserController::class, 'reservationPayment'])->name('user.reservation.payment');
     Route::post('/reservation-payment', [App\Http\Controllers\UserController::class, 'reservationPaymentCreate'])->name('user.reservation.payment.create');

@@ -5,8 +5,16 @@
         <div class="row justify-content-center">
             <div class="col-lg-9">
                 <h1>Hotels</h1>
+                <div id="alert-errors">
+                @if($errors->any())
+                    @foreach($errors->all() as $error)
+                        <div class="alert alert-danger" role="alert">
+                            {{$error}}
+                        </div>
+                    @endforeach
+                @endif
+                </div>
                 <div class="d-flex flex-wrap gap-3">
-
                     @foreach($hotels as $hotel)
                         <div class="card" style="width: 18rem;">
                             <img
@@ -77,3 +85,9 @@
 
 @endsection
 
+<script>
+    //if errors 3 seconds later hide
+    setTimeout(function () {
+        document.getElementById("alert-errors").style.display = "none";
+    }, 2000);
+</script>
