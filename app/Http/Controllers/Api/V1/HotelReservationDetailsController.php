@@ -10,7 +10,7 @@ use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Validator;
 
-class HotelDetailsController extends Controller
+class HotelReservationDetailsController extends Controller
 {
     public function index()
     {
