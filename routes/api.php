@@ -21,5 +21,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('v1')->group(function () {
 
     Route::apiResource('hotels', \App\Http\Controllers\Api\V1\HotelController::class);
-
+    Route::apiResource('hotels-details', \App\Http\Controllers\Api\V1\HotelDetailsController::class);
+    Route::put('hotels-details/{reservationId}', [\App\Http\Controllers\Api\V1\HotelDetailsController::class, 'update']);
 });
