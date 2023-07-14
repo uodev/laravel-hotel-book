@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class HotelDetailsResource extends JsonResource
+class HotelReservationDetailsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

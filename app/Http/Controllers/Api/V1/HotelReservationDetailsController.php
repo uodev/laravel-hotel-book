@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\HotelDetailsRequest;
-use App\Http\Resources\HotelDetailsResource;
+use App\Http\Requests\HotelReservationDetailsRequest;
+use App\Http\Resources\HotelReservationDetailsResource;
 use App\Models\HotelDetails;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
@@ -14,7 +14,7 @@ class HotelReservationDetailsController extends Controller
 {
     public function index()
     {
-        $hotelDetails = HotelDetailsResource::collection(Reservation::paginate(10));
+        $hotelDetails = HotelReservationDetailsResource::collection(Reservation::paginate(10));
 
         return response()->json([
             'success' => true,
@@ -33,7 +33,7 @@ class HotelReservationDetailsController extends Controller
                 'message' => 'Hotel details not found'
             ], 404);
         }
-        $hotel = HotelDetailsResource::make($hotelDetails);
+        $hotel = HotelReservationDetailsResource::make($hotelDetails);
 
             return response()->json([
                 'success' => true,
@@ -70,7 +70,7 @@ class HotelReservationDetailsController extends Controller
             $hotelDetails->status = 2;
         }
         $hotelDetails->save();
-        $hotel = HotelDetailsResource::make($hotelDetails);
+        $hotel = HotelReservationDetailsResource::make($hotelDetails);
 
         return response()->json([
             'success' => true,
